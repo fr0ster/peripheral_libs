@@ -1,3 +1,0 @@
-[submodule "ds18b20"]
-	path = ds18b20
-	url = https://github.com/nimaltd/ds18b20.git
