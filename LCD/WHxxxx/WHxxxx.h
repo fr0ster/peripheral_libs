@@ -1,5 +1,5 @@
-#ifndef __LCD_H
-#define __LCD_H
+#ifndef __WHXXXX_H
+#define __WHXXXX_H
 
 #ifdef __cplusplus
 extern "C"
@@ -37,4 +37,4 @@ extern "C"
 }
 #endif
 
-#endif /* __LCD_H */
+#endif /* __WHXXXX_H */
