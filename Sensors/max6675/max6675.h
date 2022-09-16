@@ -1,9 +1,10 @@
+#include "conf.h"
+
+#ifdef MAX6675_ENABLED
 #ifndef _MAX6675_H
 #define _MAX6675_H
 
 #include "main.h"
-
-#define MAX6675_ENABLED
 
 #define MAX6675_SPI     &hspi2
 
@@ -18,3 +19,4 @@ uint8_t max6675ReadReg(uint16_t *reg, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
 float max6675Temp(uint16_t reg);
 
 #endif /* _MAX6675_H */
+#endif /*MAX6675_ENABLED*/

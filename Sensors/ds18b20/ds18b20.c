@@ -1,5 +1,5 @@
 #include "ds18b20.h"
-#ifdef DS18B20_GPIO_Port
+#ifdef DS18b20_ENABLED 
 
 //###################################################################################
 Ds18b20Sensor_t ds18b20[_DS18B20_MAX_SENSORS];
@@ -554,4 +554,4 @@ uint8_t DS18B20_AllDone(OneWire_t *OneWire)
 	/* If read bit is low, then device is not finished yet with calculation temperature */
 	return OneWire_ReadBit(OneWire);
 }
-#endif /*DS18B20_GPIO_Port*/
+#endif /*DS18b20_ENABLED*/

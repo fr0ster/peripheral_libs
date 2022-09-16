@@ -18,7 +18,7 @@
  */
 #include "ds18b20Config.h"
 #include "tim.h"
-#ifdef DS18B20_GPIO_Port
+#ifdef ONEWIRE_ENABLED
 
 void ONEWIRE_DELAY(uint16_t time_us)
 {
@@ -412,4 +412,4 @@ uint8_t OneWire_CRC8(uint8_t *addr, uint8_t len) {
 	/* Return calculated CRC */
 	return crc;
 }
-#endif /*DS18B20_GPIO_Port*/
+#endif /*ONEWIRE_ENABLED*/

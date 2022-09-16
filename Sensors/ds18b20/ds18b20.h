@@ -1,3 +1,7 @@
+#include "conf.h"
+
+#ifdef DS18b20_ENABLED
+
 #ifndef _DS18B20_H
 #define _DS18B20_H
 //	2018/09/08
@@ -79,3 +83,4 @@ uint8_t DS18B20_AllDone(OneWire_t *OneWireStruct);
 //###################################################################################
 
 #endif
+#endif /*DS18b20_ENABLED*/

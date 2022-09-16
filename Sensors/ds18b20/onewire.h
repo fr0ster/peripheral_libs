@@ -1,3 +1,7 @@
+#include "conf.h"
+
+#ifdef ONEWIRE_ENABLED
+
 #ifndef ONEWIRE_H
 #define ONEWIRE_H 
 
@@ -68,3 +72,4 @@ uint8_t OneWire_CRC8(uint8_t* addr, uint8_t len);
 #endif
 
 #endif
+#endif /*ONEWIRE_ENABLED*/

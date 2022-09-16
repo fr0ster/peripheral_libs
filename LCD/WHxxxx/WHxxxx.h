@@ -1,5 +1,5 @@
-#define WHXXXX_ENABLED
-
+#include "conf.h"
+#ifdef WHXXXX_ENABLED
 #ifndef __WHXXXX_H
 #define __WHXXXX_H
 
@@ -8,7 +8,7 @@
 extern "C"
 {
 #endif
-#include "conf.h"
+#include "WDXXXXconf.h"
 #include "i2ctools.h"
 
 #if !defined(LCD_ADDR)
@@ -41,3 +41,4 @@ extern "C"
 #endif
 
 #endif /* __WHXXXX_H */
+#endif /*MAX6675_ENABLED*/
