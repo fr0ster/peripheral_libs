@@ -16,9 +16,9 @@
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
  */
-#include "ds18b20Config.h"
-#include "tim.h"
+#include "ds18b20.h"
 #ifdef ONEWIRE_ENABLED
+#include "tim.h"
 
 void ONEWIRE_DELAY(uint16_t time_us)
 {
