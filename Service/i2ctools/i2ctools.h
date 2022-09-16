@@ -1,6 +1,8 @@
 #ifndef __I2CTOOLS_H
 #define __I2CTOOLS_H
 
+#define I2CUTILS_ENABLED
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+#define MAX6675_ENABLED
+
 #define MAX6675_SPI     &hspi2
 
 #define MAX6675_CS_SET(MAX6675_CS_GPIO_Port, MAX6675_CS_Pin)   (HAL_GPIO_WritePin(MAX6675_CS_GPIO_Port, MAX6675_CS_Pin, GPIO_PIN_RESET))
