@@ -1,10 +1,12 @@
+#include "conf.h"
+#ifdef I2CUTILS_ENABLED
 #ifndef __I2CTOOLS_H
 #define __I2CTOOLS_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "conf.h"
+// #include "conf.h"
 #include "main.h"
 
 void I2C_Scan_Log(I2C_HandleTypeDef *phi2c, UART_HandleTypeDef *phuart1);
@@ -22,3 +24,4 @@ void I2C_send(
 #endif
 
 #endif /* __I2CTOOLS_H */
+#endif /*I2CUTILS_ENABLED*/
