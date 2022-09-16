@@ -1,3 +1,5 @@
+#ifdef I2C_ENABLED
+
 #include "i2ctools.h"
 #include <stdio.h>
 #include <string.h>
@@ -63,3 +65,4 @@ void I2C_send(uint8_t data,
   HAL_I2C_Master_Transmit(phi2c, DevAddress, data_arr, sizeof(data_arr), HAL_MAX_DELAY);
   HAL_Delay(Delay);
 }
+#endif /*I2C_ENABLED*/

@@ -1,3 +1,4 @@
+#ifdef I2C_ENABLED
 #ifndef __I2CTOOLS_H
 #define __I2CTOOLS_H
 
@@ -22,3 +23,4 @@ void I2C_send(
 #endif
 
 #endif /* __I2CTOOLS_H */
+#endif /*I2C_ENABLED*/

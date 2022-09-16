@@ -1,3 +1,4 @@
+#ifdef SPI_ENABLED
 #include "stm32f1xx_hal.h"
 #include "gpio.h"
 #include "spi.h"
@@ -42,3 +43,4 @@ float max6675TempFiltered(uint16_t reg)
   celsius_filtered = (1 - KOEF)*celsius_filtered + KOEF * celsius;
   return celsius_filtered;
 }
+#endif /*SPI_ENABLED*/

@@ -1,3 +1,4 @@
+#ifdef I2C_ENABLED
 #ifndef __WHXXXX_H
 #define __WHXXXX_H
 
@@ -38,3 +39,4 @@ extern "C"
 #endif
 
 #endif /* __WHXXXX_H */
+#endif /*I2C_ENABLED*/

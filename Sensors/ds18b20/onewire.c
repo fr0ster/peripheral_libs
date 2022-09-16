@@ -16,6 +16,7 @@
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
  */
+#ifdef DS18B20_GPIO_Port
 #include "onewire.h"
 #include "ds18b20Config.h"
 #include "tim.h"
@@ -412,4 +413,4 @@ uint8_t OneWire_CRC8(uint8_t *addr, uint8_t len) {
 	/* Return calculated CRC */
 	return crc;
 }
-
+#endif /*DS18B20_GPIO_Port*/

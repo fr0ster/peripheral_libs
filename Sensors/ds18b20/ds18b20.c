@@ -1,4 +1,4 @@
-
+#ifdef DS18B20_GPIO_Port
 
 #include "ds18b20.h"
 
@@ -555,3 +555,4 @@ uint8_t DS18B20_AllDone(OneWire_t *OneWire)
 	/* If read bit is low, then device is not finished yet with calculation temperature */
 	return OneWire_ReadBit(OneWire);
 }
+#endif /*DS18B20_GPIO_Port*/

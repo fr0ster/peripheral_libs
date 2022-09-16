@@ -1,4 +1,4 @@
-
+#ifdef DS18B20_GPIO_Port
 #ifndef _DS18B20_H
 #define _DS18B20_H
 //	2018/09/08
@@ -81,3 +81,4 @@ uint8_t DS18B20_AllDone(OneWire_t *OneWireStruct);
 //###################################################################################
 
 #endif
+#endif /*DS18B20_GPIO_Port*/

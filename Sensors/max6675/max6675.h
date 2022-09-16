@@ -1,3 +1,4 @@
+#ifdef SPI_ENABLED
 #ifndef _MAX6675_H
 #define _MAX6675_H
 
@@ -16,3 +17,4 @@ uint8_t max6675ReadReg(uint16_t *reg, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin);
 float max6675Temp(uint16_t reg);
 
 #endif /* _MAX6675_H */
+#endif /*SPI_ENABLED*/
