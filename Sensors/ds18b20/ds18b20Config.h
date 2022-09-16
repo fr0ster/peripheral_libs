@@ -1,6 +1,8 @@
 #ifndef _DS18B20CONFIG_H
 #define _DS18B20CONFIG_H
 
+#include "onewire.h"
+
 //	Init timer on cube    1us per tick				example 72 MHz cpu >>> Prescaler=(72-1)      counter period=Max
 //###################################################################################
 #define _DS18B20_USE_FREERTOS 1

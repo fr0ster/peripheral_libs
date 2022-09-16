@@ -2,7 +2,6 @@
 #define _DS18B20_H
 //	2018/09/08
 
-#include "onewire.h"
 #include "ds18b20Config.h"
 #include <stdbool.h>
 
