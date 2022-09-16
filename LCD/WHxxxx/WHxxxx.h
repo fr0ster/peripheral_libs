@@ -1,12 +1,15 @@
+#define WHXXXX_ENABLED
+
 #ifndef __WHXXXX_H
 #define __WHXXXX_H
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 #include "conf.h"
-#include "main.h"
+#include "i2ctools.h"
 
 #if !defined(LCD_ADDR)
 #error "Define LCD1602 or LCD2004"
