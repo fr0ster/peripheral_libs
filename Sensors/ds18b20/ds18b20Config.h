@@ -1,5 +1,3 @@
-#ifdef DS18B20_GPIO_Port
-
 #ifndef _DS18B20CONFIG_H
 #define _DS18B20CONFIG_H
 
@@ -19,4 +17,3 @@
 //###################################################################################
 
 #endif
-#endif /*DS18B20_GPIO_Port*/

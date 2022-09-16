@@ -1,5 +1,5 @@
-#ifdef I2C_ENABLED
 #include "WHxxxx.h"
+#ifdef I2C_ENABLED
 
 I2C_HandleTypeDef *hi2c;
 

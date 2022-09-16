@@ -1,6 +1,5 @@
-#ifdef I2C_ENABLED
-
 #include "i2ctools.h"
+#ifdef I2C_ENABLED
 #include <stdio.h>
 #include <string.h>
 

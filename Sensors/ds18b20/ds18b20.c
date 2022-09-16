@@ -1,6 +1,5 @@
-#ifdef DS18B20_GPIO_Port
-
 #include "ds18b20.h"
+#ifdef DS18B20_GPIO_Port
 
 //###################################################################################
 Ds18b20Sensor_t ds18b20[_DS18B20_MAX_SENSORS];

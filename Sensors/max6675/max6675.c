@@ -1,9 +1,9 @@
-#ifdef SPI_ENABLED
 #include "stm32f1xx_hal.h"
 #include "gpio.h"
 #include "spi.h"
 #include "max6675.h"
 
+#ifdef SPI_ENABLED
 uint8_t max6675ReadReg(uint16_t *reg, GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin)
 {
   HAL_StatusTypeDef hal_answer = HAL_ERROR;
