@@ -5,7 +5,7 @@
 
 //	Init timer on cube    1us per tick				example 72 MHz cpu >>> Prescaler=(72-1)      counter period=Max
 //###################################################################################
-// #define _DS18B20_USE_FREERTOS 1
+#define _DS18B20_USE_FREERTOS 1
 #define _DS18B20_MAX_SENSORS 2
 #define _DS18B20_GPIO DS18B20_GPIO_Port
 #define _DS18B20_PIN DS18B20_Pin
