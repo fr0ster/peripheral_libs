@@ -9,13 +9,13 @@ uint8_t OneWireDevices;
 uint8_t TempSensorCount = 0;
 uint8_t Ds18b20StartConvert = 0;
 uint16_t Ds18b20Timeout = 0;
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 osThreadId Ds18b20Handle;
 void Task_Ds18b20(void const *argument);
 #endif
 
 //###########################################################################################
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 void Ds18b20_Init(osPriority Priority)
 {
 	osThreadDef(myTask_Ds18b20, Task_Ds18b20, Priority, 0, 128);
@@ -58,7 +58,7 @@ bool Ds18b20_Init(void)
 //###########################################################################################
 bool Ds18b20_ManualConvert(void)
 {
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 	Ds18b20StartConvert = 1;
 	while (Ds18b20StartConvert == 1)
 		Ds18b20Delay(10);
@@ -97,7 +97,7 @@ bool Ds18b20_ManualConvert(void)
 #endif
 }
 //###########################################################################################
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 void Task_Ds18b20(void const *argument)
 {
 	uint8_t Ds18b20TryToFind = _DS18B20_MAX_SENSORS;

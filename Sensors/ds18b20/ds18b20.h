@@ -10,7 +10,7 @@
 #include "onewire.h"
 #include <stdbool.h>
 
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 #include "cmsis_os.h"
 #define Ds18b20Delay(x) osDelay(x)
 #else
@@ -63,7 +63,7 @@ typedef enum
 } DS18B20_Resolution_t;
 
 //###################################################################################
-#if (_DS18B20_USE_FREERTOS == 1)
+#if (DS18B20_USE_FREERTOS == 1)
 void Ds18b20_Init(osPriority Priority);
 #else
 bool Ds18b20_Init(void);
