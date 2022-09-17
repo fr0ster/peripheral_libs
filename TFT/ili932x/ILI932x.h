@@ -128,7 +128,7 @@ void LCD_Delay(uint32_t nCount);
 uint32_t Num_power(uint8_t m, uint8_t n);
 void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width);
 void LCD_ShowString(uint8_t x, uint16_t y, __I uint8_t *p);
-void LCD_ShowNum(uint8_t x, uint16_t y, u32 num, uint8_t len, uint8_t size);
+void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size);
 void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mode);
 void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, uint8_t *bitmap);
 void LCD_Clear(uint16_t Color);

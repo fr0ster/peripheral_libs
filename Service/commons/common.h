@@ -2,48 +2,49 @@
 #define __COMMON_H
 
 #include <stdio.h>
+#include <stdint.h>
 
-//TFTLCD²¿·ÖÍâÒªµ÷ÓÃµÄº¯Êý		   
-extern uint16_t  POINT_COLOR;//Ä¬ÈÏºìÉ«    
-extern uint16_t  BACK_COLOR; //±³¾°ÑÕÉ«.Ä¬ÈÏÎª°×É«
+//TFTLCDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ÃµÄºï¿½ï¿½ï¿½		   
+extern uint16_t  POINT_COLOR;//Ä¬ï¿½Ïºï¿½É«    
+extern uint16_t  BACK_COLOR; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«.Ä¬ï¿½ï¿½Îªï¿½ï¿½É«
 
-/* LED ¶¨Òå */
-#define LED1 PAout(2)	   //°å×ÓÉÏ¶ÔÓ¦ÓÚLED1
-#define LED2 PAout(3)	   //°å×ÓÉÏ¶ÔÓ¦ÓÚLED2
+/* LED ï¿½ï¿½ï¿½ï¿½ */
+#define LED1 PAout(2)	   //ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½Ó¦ï¿½ï¿½LED1
+#define LED2 PAout(3)	   //ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½Ó¦ï¿½ï¿½LED2
 
-/* °´¼ü ¶¨Òå */
-#define KEY1   PAin(0)	   //°å×ÓÉÏµÄKEY1¼ü
-#define KEY2   PAin(1)	   //°å×ÓÉÏµÄKEY2¼ü
+/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+#define KEY1   PAin(0)	   //ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½KEY1ï¿½ï¿½
+#define KEY2   PAin(1)	   //ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½KEY2ï¿½ï¿½
 
-/* LCD ¿ØÖÆÒý½ÅÅäÖÃ*/
+/* LCD ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #define LCD_CS  PCout(8)
 #define LCD_RS	PCout(9)
 #define LCD_WR  PCout(10)
 #define LCD_RD	PCout(11)
 
-//¶¨ÒåLCDµÄ³ß´ç
+//ï¿½ï¿½ï¿½ï¿½LCDï¿½Ä³ß´ï¿½
 #define LCD_W 240
 #define LCD_H 320
 
 /***********************************************************************************
-ÉèÖÃÑÕÉ«ºê¶¨Òå
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ê¶¨ï¿½ï¿½
 ***********************************************************************************/
-#define   BLACK        0x0000                    /* ºÚÉ«£º 0, 0, 0               */
-#define   NAVY         0x000F                    /* ÉîÀ¶É«£º 0, 0, 128           */
-#define   DGREEN       0x03E0                    /* ÉîÂÌÉ«£º 0, 128, 0           */
-#define   DCYAN        0x03EF                    /* ÉîÇàÉ«£º 0, 128, 128         */
-#define   MAROON       0x7800                    /* ÉîºìÉ«£º128, 0, 0            */
-#define   PURPLE       0x780F                    /* ×ÏÉ«£º 128, 0, 128           */
-#define   OLIVE        0x7BE0                    /* éÏé­ÂÌ£º128, 128, 0          */
-#define   LGRAY        0xC618                    /* »Ò°×É«£º192, 192, 192        */
-#define   DGRAY        0x7BEF                    /* Éî»ÒÉ«£º128, 128, 128        */
-#define   BLUE         0x001F                    /* À¶É«£º 0, 0, 255             */
-#define   GREEN        0x07E0                 	 /* ÂÌÉ«£º 0, 255, 0             */
-#define   CYAN         0x07FF                    /* ÇàÉ«£º 0, 255, 255           */
-#define   RED          0xF800                    /* ºìÉ«£º 255, 0, 0             */
-#define   MAGENTA      0xF81F                    /* Æ·ºì£º 255, 0, 255           */
-#define   YELLOW       0xFFE0                    /* »ÆÉ«£º 255, 255, 0           */
-#define   WHITE        0xFFFF                    /* °×É«£º 255, 255, 255         */
+#define   BLACK        0x0000                    /* ï¿½ï¿½É«ï¿½ï¿½ 0, 0, 0               */
+#define   NAVY         0x000F                    /* ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ 0, 0, 128           */
+#define   DGREEN       0x03E0                    /* ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ 0, 128, 0           */
+#define   DCYAN        0x03EF                    /* ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ 0, 128, 128         */
+#define   MAROON       0x7800                    /* ï¿½ï¿½ï¿½É«ï¿½ï¿½128, 0, 0            */
+#define   PURPLE       0x780F                    /* ï¿½ï¿½É«ï¿½ï¿½ 128, 0, 128           */
+#define   OLIVE        0x7BE0                    /* ï¿½ï¿½ï¿½ï¿½Ì£ï¿½128, 128, 0          */
+#define   LGRAY        0xC618                    /* ï¿½Ò°ï¿½É«ï¿½ï¿½192, 192, 192        */
+#define   DGRAY        0x7BEF                    /* ï¿½ï¿½ï¿½É«ï¿½ï¿½128, 128, 128        */
+#define   BLUE         0x001F                    /* ï¿½ï¿½É«ï¿½ï¿½ 0, 0, 255             */
+#define   GREEN        0x07E0                 	 /* ï¿½ï¿½É«ï¿½ï¿½ 0, 255, 0             */
+#define   CYAN         0x07FF                    /* ï¿½ï¿½É«ï¿½ï¿½ 0, 255, 255           */
+#define   RED          0xF800                    /* ï¿½ï¿½É«ï¿½ï¿½ 255, 0, 0             */
+#define   MAGENTA      0xF81F                    /* Æ·ï¿½ì£º 255, 0, 255           */
+#define   YELLOW       0xFFE0                    /* ï¿½ï¿½É«ï¿½ï¿½ 255, 255, 0           */
+#define   WHITE        0xFFFF                    /* ï¿½ï¿½É«ï¿½ï¿½ 255, 255, 255         */
 #define   IDMCOLOR(color) (((color & 0x001F) << 11) | ((color & 0xF800) >> 11) | (color & 0x07E0))
 
 #endif	    
