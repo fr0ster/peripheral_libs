@@ -7,6 +7,7 @@
 //	2018/09/08
 
 #include "ds18b20Config.h"
+#include "onewire.h"
 #include <stdbool.h>
 
 #if (_DS18B20_USE_FREERTOS == 1)

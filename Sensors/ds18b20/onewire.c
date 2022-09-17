@@ -16,7 +16,7 @@
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
  */
-#include "ds18b20.h"
+#include "conf.h"
 #ifdef ONEWIRE_ENABLED
 #include "tim.h"
 
