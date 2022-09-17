@@ -1,5 +1,6 @@
 #include "WHxxxx.h"
 #ifdef WHXXXX_ENABLED
+#ifdef WHXXXX_I2C_ENABLED
 
 I2C_HandleTypeDef *hi2c;
 
@@ -47,4 +48,5 @@ void LCD_SendString(char *str)
         str++;                                     
     }
 }
+#endif /*WHXXXX_I2C_ENABLED*/
 #endif /*WHXXXX_ENABLED*/

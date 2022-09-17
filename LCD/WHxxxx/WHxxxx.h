@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 #include "WDXXXXconf.h"
-#include "i2ctools.h"
+#include "WHxxxx_i2c.h"
 
 #if !defined(LCD_ADDR)
 #error "Define LCD1602 or LCD2004"
