@@ -1,16 +1,9 @@
-#include "main.h"
-#include "hardware.h"
 #include "ILI932x.h"
+#ifdef ILI932x_ENABLED
 #include "Font_Lib.h"
-#include "hz16.h"
-
-uint16_t POINT_COLOR = BLUE, BACK_COLOR = WHITE; /* �ֱ����õ����ɫ�͵�ɫ	*/
+uint16_t POINT_COLOR = BLUE, BACK_COLOR = WHITE;
 
 /*****************************************************************************
-** ��������: LCD_Write_Reg
-** ��������: дָ�����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_WriteReg(uint16_t LCD_Reg, uint16_t LCD_Dat)
 {
@@ -18,121 +11,133 @@ void LCD_WriteReg(uint16_t LCD_Reg, uint16_t LCD_Dat)
 	Write_Dat(LCD_Dat);
 }
 /*****************************************************************************
-** ��������: Write_Cmd
-** ��������: дָ��
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void Write_Cmd(uint16_t LCD_Reg)
 {
-	LCD_CS = 0;
-	LCD_RS = 0;
+	// LCD_CS = 0;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
+	// LCD_RS = 0;
+	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_RESET);
 	GPIOC->ODR = (GPIOC->ODR & 0xff00) | (LCD_Reg & 0x00ff);
+	// #ifdef TFT_16_ENABLED
 	GPIOB->ODR = (GPIOB->ODR & 0x00ff) | (LCD_Reg & 0xff00);
-	LCD_WR = 0;
-	LCD_WR = 1;
-	LCD_CS = 1;
+	// #endif
+	// LCD_WR = 0;
+	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_RESET);
+	// LCD_WR = 1;
+	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_SET);
+	// LCD_CS = 1;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
-** ��������: Write_Dat
-** ��������: д����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void Write_Dat(uint16_t LCD_Dat)
 {
-	LCD_CS = 0;
-	LCD_RS = 1;
+	// LCD_CS = 0;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
+	// LCD_RS = 1;
+	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
 	GPIOC->ODR = (GPIOC->ODR & 0xff00) | (LCD_Dat & 0x00ff);
+	// #ifdef TFT_16_ENABLED
 	GPIOB->ODR = (GPIOB->ODR & 0x00ff) | (LCD_Dat & 0xff00);
-	LCD_WR = 0;
-	LCD_WR = 1;
-	LCD_CS = 1;
+	// #endif
+	// LCD_WR = 0;
+	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_RESET);
+	// LCD_WR = 1;
+	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_SET);
+	// LCD_CS = 1;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
-** ��������: LCD_ReadReg
-** ��������: ��ָ��
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 uint16_t LCD_ReadReg(uint16_t LCD_Reg)
 {
 	uint16_t temp;
-	Write_Cmd(LCD_Reg); //д��Ҫ���ļĴ�����
+	Write_Cmd(LCD_Reg);
 
-	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x44444444; //���˿ڸ�8λ���ó�����
-	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x44444444; //���˿ڵ�8λ���ó�����
-	LCD_CS = 0;
-	LCD_RS = 1;
-	LCD_RD = 0;
-	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff)); //��ȡ����(���Ĵ���ʱ,������Ҫ��2��)
-	LCD_RD = 1;
-	LCD_CS = 1;
-	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x33333333; //�ͷŶ˿ڸ�8λΪ���
-	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x33333333; //�ͷŶ˿ڵ�8λΪ���
+	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x44444444;
+	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x44444444;
+	// LCD_CS = 0;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
+	// LCD_RS = 1;
+	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
+	// LCD_RD = 0;
+	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_RESET);
+	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff));
+	// LCD_RD = 1;
+	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_SET);
+	// LCD_CS = 1;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
+	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x33333333;
+	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x33333333;
 	return temp;
 }
 /*****************************************************************************
-** ��������: LCD_ReadDat
-** ��������: ������
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 uint16_t LCD_ReadDat()
 {
 	uint16_t temp;
 
-	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x44444444; //���˿ڸ�8λ���ó�����
-	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x44444444; //���˿ڵ�8λ���ó�����
-	LCD_CS = 0;
-	LCD_RS = 1;
-	LCD_RD = 0;
-	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff)); //��ȡ����(���Ĵ���ʱ,������Ҫ��2��)
-	LCD_RD = 1;
-	LCD_CS = 1;
-	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x33333333; //�ͷŶ˿ڸ�8λΪ���
-	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x33333333; //�ͷŶ˿ڵ�8λΪ���
+	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x44444444;
+	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x44444444;
+	// LCD_CS = 0;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
+	// LCD_RS = 1;
+	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
+	// LCD_RD = 0;
+	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_RESET);
+	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff));
+	// LCD_RD = 1;
+	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_SET);
+	// LCD_CS = 1;
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
+	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x33333333;
+	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x33333333;
 
 	return temp;
 }
 /*****************************************************************************
-** ��������: LCD_Configuration
-** ��������: LCD_IO������
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_Configuration()
 {
-	// GPIO_InitTypeDef GPIO_InitStructure;
-	// RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC,ENABLE);
-
-	// /* ��������IO ���ӵ�GPIOB *********************/
-	// GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11
-	// 							| GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
-	// GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   // ���������ʽ
-	// GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;  // ���IO���������Ϊ50MHZ
-	// GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	// /* ���ÿ���IO ���ӵ�PD12.PD13.PD14.PD15 *********************/
-	// GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3
-	// 							| GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7
-	// 							| GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11;
-	// GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;   // ���������ʽ
-	// GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;  // ���IO���������Ϊ50MHZ
-	// GPIO_Init(GPIOC, &GPIO_InitStructure);
+#ifdef TFT_08_ENABLED
+#if (defined(DB08_Pin) | \
+	 defined(DB09_Pin) | \
+	 defined(DB10_Pin) | \
+	 defined(DB11_Pin) | \
+	 defined(DB12_Pin) | \
+	 defined(DB13_Pin) | \
+	 defined(DB14_Pin) | \
+	 defined(DB15_Pin))
+#else
+#error "Configure TFT data Pins in CubeMX, set pins for DB08-DB15 and set name for this pins as DB08-DB15"
+#endif
+#endif
+#ifdef TFT_16_ENABLED
+#if (defined(DB00_Pin) | \
+	 defined(DB01_Pin) | \
+	 defined(DB02_Pin) | \
+	 defined(DB03_Pin) | \
+	 defined(DB04_Pin) | \
+	 defined(DB05_Pin) | \
+	 defined(DB06_Pin) | \
+	 defined(DB07_Pin))
+#else
+#error "Configure TFT data Pins in CubeMX, set pins for DB00-DB07 and set name for this pins as DB00-DB07"
+#endif
+#endif
+	// __HAL_RCC_GPIOC_CLK_ENABLE();
+	// __HAL_RCC_GPIOB_CLK_ENABLE();
+	HAL_GPIO_WritePin(GPIOC, TFT_CS_Pin | TFT_RS_Pin | TFT_WR_Pin | TFT_RD_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
-** ��������: LCD_Init
-** ��������: LCD��ʼ��
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_Init(void)
 {
 	static uint16_t DeviceCode;
 	LCD_Configuration();
 	LCD_WriteReg(0x0000, 0x0001);
-	LCD_Delay(5); // LCD_Delay 50 ms
+	LCD_Delay(50); // LCD_Delay 50 ms
 	DeviceCode = LCD_ReadReg(0x0000);
 	printf(" ID=0x%x\n", DeviceCode);
 	if (DeviceCode == 0x9325 || DeviceCode == 0x9328) // ILI9325
@@ -254,32 +259,20 @@ void LCD_Init(void)
 	LCD_Clear(BACK_COLOR);
 }
 /*****************************************************************************
-** ��������: LCD_DrawPoint
-** ��������: дһ����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_DrawPoint(uint16_t x, uint16_t y)
 {
-	LCD_SetCursor(x, y); //���ù��λ��
-	Write_Cmd(R34);		 //��ʼд��GRAM
+	LCD_SetCursor(x, y);
+	Write_Cmd(R34);
 	Write_Dat(POINT_COLOR);
 }
 /*****************************************************************************
-** ��������: LCD_WriteRAM_Prepare
-** ��������: Щ׼��
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_WriteRAM_Prepare()
 {
 	Write_Cmd(R34);
 }
 /*****************************************************************************
-** ��������: LCD_SetCursor
-** ��������: ���ù�꺯��
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_SetCursor(uint8_t Xpos, uint16_t Ypos)
 {
@@ -287,25 +280,17 @@ void LCD_SetCursor(uint8_t Xpos, uint16_t Ypos)
 	LCD_WriteReg(R33, Ypos);
 }
 /*****************************************************************************
-** ��������: LCD_SetDisplayWindow
-** ��������: ���ô��ں��� (��Width��Height����һ�£�ǰ����)
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width)
 {
-	LCD_WriteReg(R80, Xpos);		  //ˮƽ����GRAM��ʼ��ַ
-	LCD_WriteReg(R81, Xpos + Height); //ˮƽ����GRAM������ַ
-	LCD_WriteReg(R82, Ypos);		  //��ֱ����GRAM��ʼ��ַ
-	LCD_WriteReg(R83, Ypos + Width);  //��ֱ����GRAM������ַ
+	LCD_WriteReg(R80, Xpos);
+	LCD_WriteReg(R81, Xpos + Height);
+	LCD_WriteReg(R82, Ypos);
+	LCD_WriteReg(R83, Ypos + Width);
 
-	LCD_SetCursor(Xpos, Ypos); //���ù��λ��
+	LCD_SetCursor(Xpos, Ypos);
 }
 /*****************************************************************************
-** ��������: LCD_ShowString
-** ��������: ��ʾ�ַ�������
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 #define MAX_CHAR_POSX 232
 #define MAX_CHAR_POSY 304
@@ -329,10 +314,6 @@ void LCD_ShowString(uint8_t x, uint16_t y, __I uint8_t *p)
 	}
 }
 /*****************************************************************************
-** ��������: LCD_ShowChar
-** ��������: ��ʾһ���ַ�����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mode)
 {
@@ -341,21 +322,21 @@ void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mo
 	if (x > MAX_CHAR_POSX || y > MAX_CHAR_POSY)
 		return;
 
-	LCD_SetDisplayWindow(x, y, (size / 2 - 1), size - 1); //���ô���
+	LCD_SetDisplayWindow(x, y, (size / 2 - 1), size - 1);
 
-	LCD_WriteRAM_Prepare(); //��ʼд��GRAM
-	if (!mode)				//�ǵ��ӷ�ʽ
+	LCD_WriteRAM_Prepare();
+	if (!mode)
 	{
 		for (pos = 0; pos < size; pos++)
 		{
 			if (size == 12)
-				temp = ASCII_1206[chars - 0x20][pos]; //����1206����
+				temp = ASCII_1206[chars - 0x20][pos];
 			else
-				temp = ASCII_1608[chars - 0x20][pos]; //����1608����
+				temp = ASCII_1608[chars - 0x20][pos];
 			for (t = 0; t < size / 2; t++)
 			{
-				// if(temp&0x01)            	 			//�ȴ���λ��ȡģ�й�ϵ
-				if ((temp << t) & 0x80) //�ȴ���λ
+				// if(temp&0x01)
+				if ((temp << t) & 0x80)
 				{
 					Write_Dat(RED);
 				}
@@ -363,91 +344,80 @@ void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mo
 				{
 					Write_Dat(WHITE);
 				}
-				// temp>>=1; 	   							//����ȴ���λ��ȥ��������
+				// temp>>=1;
 			}
 		}
 	}
-	else //���ӷ�ʽ
+	else
 	{
 		for (pos = 0; pos < size; pos++)
 		{
 			if (size == 12)
-				temp = ASCII_1206[chars - 0x20][pos]; //����1206����
+				temp = ASCII_1206[chars - 0x20][pos];
 			else
-				temp = ASCII_1608[chars - 0x20][pos]; //����1608����
+				temp = ASCII_1608[chars - 0x20][pos];
 			for (t = 0; t < size / 2; t++)
 			{
 				if ((temp << t) & 0x80)
-					LCD_DrawPoint(x + t, y + pos); //��һ����
-				// temp>>=1; 								//����ȴ���λ��ȥ��������
+					LCD_DrawPoint(x + t, y + pos);
+				// temp>>=1;
 			}
 		}
 	}
-	/* �ָ������С	*/
-	LCD_WriteReg(R80, 0x0000); //ˮƽ����GRAM��ʼ��ַ
-	LCD_WriteReg(R81, 0x00EF); //ˮƽ����GRAM������ַ
-	LCD_WriteReg(R82, 0x0000); //��ֱ����GRAM��ʼ��ַ
-	LCD_WriteReg(R83, 0x013F); //��ֱ����GRAM������ַ
+	LCD_WriteReg(R80, 0x0000);
+	LCD_WriteReg(R81, 0x00EF);
+	LCD_WriteReg(R82, 0x0000);
+	LCD_WriteReg(R83, 0x013F);
 }
 /*****************************************************************************
-** ��������: LCD_Clear
-** ��������: ����Ļ����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_Clear(uint16_t Color)
 {
 	uint32_t index = 0;
-	LCD_SetCursor(0x00, 0x0000); //���ù��λ��
-	LCD_WriteRAM_Prepare();		 //��ʼд��GRAM
+	LCD_SetCursor(0x00, 0x0000);
+	LCD_WriteRAM_Prepare();
 	for (index = 0; index < 76800; index++)
 	{
 		Write_Dat(Color);
 	}
 }
 /*****************************************************************************
-** ��������: WriteString
-** ��������: ��ָ��λ�ÿ�ʼ��ʾһ���ַ�����һ������
-				֧���Զ�����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color)
 {
-	uint16_t usIndex;
+	// uint16_t usIndex;
 	uint16_t usWidth = 0;
-	FNT_GB16 *ptGb16 = 0;
+	// FNT_GB16 *ptGb16 = 0;
 
-	ptGb16 = (FNT_GB16 *)GBHZ_16;
+	// ptGb16 = (FNT_GB16 *)GBHZ_16;
 	while (1)
 	{
 		if (*pcStr == 0)
 		{
-			break; /* �ַ�������            */
+			break;
 		}
-		x0 = x0 + (usWidth); /* �����ַ�����ʾ�ɽ���         */
-		if (*pcStr > 0x80)	 /* �ж�Ϊ����                   */
+		x0 = x0 + (usWidth);
+		if (*pcStr > 0x80)
 		{
-			if ((x0 + 16) > LCD_W) /* ���ʣ��ռ��Ƿ��㹻         */
-			{
-				x0 = 0;
-				y0 = y0 + 16;	/* �ı���ʾ����                 */
-				if (y0 > LCD_H) /* �����곬��                   */
-				{
-					y0 = 0;
-				}
-			}
-			usIndex = findHzIndex(pcStr);
-			usWidth = WriteOneHzChar((uint8_t *)&(ptGb16[usIndex].Msk[0]), x0, y0, color);
-			/* ��ʾ�ַ�                     */
-			pcStr += 2;
+			// if ((x0 + 16) > LCD_W)
+			// {
+			// 	x0 = 0;
+			// 	y0 = y0 + 16;
+			// 	if (y0 > LCD_H)
+			// 	{
+			// 		y0 = 0;
+			// 	}
+			// }
+			// usIndex = findHzIndex(pcStr);
+			// usWidth = WriteOneHzChar((uint8_t *)&(ptGb16[usIndex].Msk[0]), x0, y0, color);
+			// pcStr += 2;
 		}
 		else
-		{						/* �ж�Ϊ�Ǻ���                 */
-			if (*pcStr == '\r') /* ����                         */
+		{
+			if (*pcStr == '\r')
 			{
-				y0 = y0 + 16;	/* �ı���ʾ����                 */
-				if (y0 > LCD_H) /* �����곬��                   */
+				y0 = y0 + 16;
+				if (y0 > LCD_H)
 				{
 					y0 = 0;
 				}
@@ -455,7 +425,7 @@ void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color)
 				usWidth = 0;
 				continue;
 			}
-			else if (*pcStr == '\n') /* ���뵽���                   */
+			else if (*pcStr == '\n')
 			{
 				x0 = 0;
 				pcStr++;
@@ -464,27 +434,22 @@ void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color)
 			}
 			else
 			{
-				if ((x0 + 8) > LCD_W) /* ���ʣ��ռ��Ƿ��㹻         */
+				if ((x0 + 8) > LCD_W)
 				{
 					x0 = 0;
-					y0 = y0 + 16;	/* �ı���ʾ����                 */
-					if (y0 > LCD_H) /* �����곬��                   */
+					y0 = y0 + 16;
+					if (y0 > LCD_H)
 					{
 						y0 = 0;
 					}
 				}
 				usWidth = WriteOneASCII((uint8_t *)&ASCII_1608[(*pcStr - 0x20)][0], x0, y0, color);
-				/* ASCII���21H��ֵ��Ӧ��λ��3��*/
 				pcStr += 1;
 			}
 		}
 	}
 }
 /*****************************************************************************
-** ��������: WriteOneHzChar
-** ��������: ��ʾһ��ָ����С�ĺ���
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 uint16_t WriteOneHzChar(uint8_t *pucMsk,
 						uint16_t x0,
@@ -492,54 +457,49 @@ uint16_t WriteOneHzChar(uint8_t *pucMsk,
 						uint16_t color)
 {
 	uint16_t i, j;
-	uint16_t mod[16]; /* ��ǰ��ģ                     */
-	uint16_t *pusMsk; /* ��ǰ�ֿ��ַ                 */
+	uint16_t mod[16];
+	uint16_t *pusMsk;
 	uint16_t y;
 
 	pusMsk = (uint16_t *)pucMsk;
-	for (i = 0; i < 16; i++) /* ���浱ǰ���ֵ���ʽ��ģ       */
+	for (i = 0; i < 16; i++)
 	{
-		mod[i] = *pusMsk++;											  /* ȡ�õ�ǰ��ģ�����ֶ������   */
-		mod[i] = ((mod[i] & 0xff00) >> 8) | ((mod[i] & 0x00ff) << 8); /* ��ģ�����ߵ��ֽڣ�Ϊ����ʾ   */
-																	  /* ��Ҫ��                       */
+		mod[i] = *pusMsk++;
+		mod[i] = ((mod[i] & 0xff00) >> 8) | ((mod[i] & 0x00ff) << 8);
 	}
 	y = y0;
-	for (i = 0; i < 16; i++) /* 16��                         */
+	for (i = 0; i < 16; i++)
 	{
-#ifdef __DISPLAY_BUFFER			 /* ʹ���Դ���ʾ                 */
-		for (j = 0; j < 16; j++) /* 16��                         */
+#ifdef __DISPLAY_BUFFER
+		for (j = 0; j < 16; j++)
 		{
-			if ((mod[i] << j) & 0x8000) /* ��ʾ��ģ                     */
+			if ((mod[i] << j) & 0x8000)
 			{
 				DispBuf[240 * (y0 + i) + x0 + j] = color;
 			}
 		}
-#else /* ֱ����ʾ                     */
+#else
 
-		LCD_SetCursor(x0, y);	 /* ����д���ݵ�ַָ��           */
-		LCD_WriteRAM_Prepare();	 /*��ʼд��GRAM	*/
-		for (j = 0; j < 16; j++) /* 16��                         */
+		LCD_SetCursor(x0, y);
+		LCD_WriteRAM_Prepare();
+		for (j = 0; j < 16; j++)
 		{
-			if ((mod[i] << j) & 0x8000) /* ��ʾ��ģ                     */
+			if ((mod[i] << j) & 0x8000)
 			{
 				Write_Dat(color);
 			}
 			else
 			{
-				Write_Dat(BACK_COLOR); /* �ö���ʽ����д�հ׵������   */
-									   // LCD_ReadDat();
+				Write_Dat(BACK_COLOR);
+				// LCD_ReadDat();
 			}
 		}
 		y++;
 #endif
 	}
-	return (16); /* ����16λ�п�                 */
+	return (16);
 }
 /*****************************************************************************
-** ��������: WriteOneASCII
-** ��������: ��ʾһ��ָ����С���ַ�
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 uint16_t WriteOneASCII(uint8_t *pucMsk,
 					   uint16_t x0,
@@ -552,9 +512,9 @@ uint16_t WriteOneASCII(uint8_t *pucMsk,
 
 	y = y0;
 	for (i = 0; i < 16; i++)
-	{ /* 16��                         */
+	{
 		ucChar = *pucMsk++;
-#ifdef __DISPLAY_BUFFER /* ʹ���Դ���ʾ                 */
+#ifdef __DISPLAY_BUFFER
 		for (j = 0; j < 8; j++)
 		{ /* 8��                          */
 			if ((ucChar << j) & 0x80)
@@ -562,14 +522,14 @@ uint16_t WriteOneASCII(uint8_t *pucMsk,
 				DispBuf[240 * (y0 + i) + x0 + j] = color;
 			}
 		}
-#else /* ֱ����ʾ                     */
+#else
 
-		LCD_SetCursor(x0, y);	/* ����д���ݵ�ַָ��           */
-		LCD_WriteRAM_Prepare(); /* ��ʼд��GRAM	    		  */
+		LCD_SetCursor(x0, y);
+		LCD_WriteRAM_Prepare();
 		for (j = 0; j < 8; j++)
-		{ /* 8��                          */
+		{
 			if ((ucChar << j) & 0x80)
-			{ /* ��ʾ��ģ                     */
+			{
 				Write_Dat(color);
 			}
 			else
@@ -584,10 +544,6 @@ uint16_t WriteOneASCII(uint8_t *pucMsk,
 	return (8); /* ����16λ�п�                 */
 }
 /*****************************************************************************
-** ��������: Num_power
-** ��������: M��N�η�
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 uint32_t Num_power(uint8_t m, uint8_t n)
 {
@@ -597,11 +553,6 @@ uint32_t Num_power(uint8_t m, uint8_t n)
 	return result;
 }
 /*****************************************************************************
-** ��������: LCD_ShowNum
-** ��������: ��ָ��λ����ʾһ������
-				num:��ֵ(0~4294967295);
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size)
 {
@@ -624,11 +575,6 @@ void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size)
 	}
 }
 /*****************************************************************************
-** ��������: LCD_WriteBMP
-** ��������: ��ָ����λ����ʾһ��ͼƬ
-				Xpos��YposΪͼƬ��ʾ��ַ��Height��Width ΪͼƬ�Ŀ��Ⱥ͸߶�
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, uint8_t *bitmap)
 {
@@ -638,7 +584,7 @@ void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, u
 
 	LCD_SetDisplayWindow(Xpos, Ypos, Width - 1, Height - 1);
 
-	// LCD_WriteReg(0x03, 0x1038);	//�����Ҫ������ʾͼƬ������ȥ������ ��ͬʱ��Width��Hight����һ�¾Ϳ���
+	// LCD_WriteReg(0x03, 0x1038);
 
 	LCD_WriteRAM_Prepare();
 
@@ -646,18 +592,12 @@ void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, u
 	{
 		Write_Dat(*bitmap_ptr++);
 	}
-	//�ָ������С
-	LCD_WriteReg(R80, 0x0000); //ˮƽ����GRAM��ʼ��ַ
-	LCD_WriteReg(R81, 0x00EF); //ˮƽ����GRAM������ַ
-	LCD_WriteReg(R82, 0x0000); //��ֱ����GRAM��ʼ��ַ
-	LCD_WriteReg(R83, 0x013F); //��ֱ����GRAM������ַ
+	LCD_WriteReg(R80, 0x0000);
+	LCD_WriteReg(R81, 0x00EF);
+	LCD_WriteReg(R82, 0x0000);
+	LCD_WriteReg(R83, 0x013F);
 }
 /*****************************************************************************
-** ��������: LCD_DrawLine
-** ��������: ��ָ��������λ�û�һ����
-				x1,y1:��������  x2,y2:�յ�����
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 {
@@ -665,14 +605,14 @@ void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 	int xerr = 0, yerr = 0, delta_x, delta_y, distance;
 	int incx, incy, uRow, uCol;
 
-	delta_x = x2 - x1; //������������
+	delta_x = x2 - x1;
 	delta_y = y2 - y1;
 	uRow = x1;
 	uCol = y1;
 	if (delta_x > 0)
-		incx = 1; //���õ�������
+		incx = 1;
 	else if (delta_x == 0)
-		incx = 0; //��ֱ��
+		incx = 0;
 	else
 	{
 		incx = -1;
@@ -681,19 +621,19 @@ void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 	if (delta_y > 0)
 		incy = 1;
 	else if (delta_y == 0)
-		incy = 0; //ˮƽ��
+		incy = 0;
 	else
 	{
 		incy = -1;
 		delta_y = -delta_y;
 	}
 	if (delta_x > delta_y)
-		distance = delta_x; //ѡȡ��������������
+		distance = delta_x;
 	else
 		distance = delta_y;
-	for (t = 0; t <= distance + 1; t++) //�������
+	for (t = 0; t <= distance + 1; t++)
 	{
-		LCD_DrawPoint(uRow, uCol); //����
+		LCD_DrawPoint(uRow, uCol);
 		xerr += delta_x;
 		yerr += delta_y;
 		if (xerr > distance)
@@ -709,11 +649,6 @@ void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 	}
 }
 /*****************************************************************************
-** ��������: LCD_DrawLine
-** ��������: ��ָ��λ�û�һ��ָ����С��Բ
-				(x,y):���ĵ� 	 r    :�뾶
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r)
 {
@@ -746,45 +681,39 @@ void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r)
 	}
 }
 /*****************************************************************************
-** ��������: LCD_Fill
-** ��������: ��ָ�����������ָ����ɫ
-				�����С:  (xend-xsta)*(yend-ysta)
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend, uint16_t color)
 {
 	uint32_t n;
 	//���ô���
-	LCD_WriteReg(R80, xsta);   //ˮƽ����GRAM��ʼ��ַ
-	LCD_WriteReg(R81, xend);   //ˮƽ����GRAM������ַ
-	LCD_WriteReg(R82, ysta);   //��ֱ����GRAM��ʼ��ַ
-	LCD_WriteReg(R83, yend);   //��ֱ����GRAM������ַ
-	LCD_SetCursor(xsta, ysta); //���ù��λ��
-	LCD_WriteRAM_Prepare();	   //��ʼд��GRAM
+	LCD_WriteReg(R80, xsta);
+	LCD_WriteReg(R81, xend);
+	LCD_WriteReg(R82, ysta);
+	LCD_WriteReg(R83, yend);
+	LCD_SetCursor(xsta, ysta);
+	LCD_WriteRAM_Prepare(); //��ʼд��GRAM
 	n = (uint32_t)(yend - ysta + 1) * (xend - xsta + 1);
 	while (n--)
 	{
 		Write_Dat(color);
 	} //��ʾ��������ɫ.
 	//�ָ�����
-	LCD_WriteReg(R80, 0x0000); //ˮƽ����GRAM��ʼ��ַ
-	LCD_WriteReg(R81, 0x00EF); //ˮƽ����GRAM������ַ
-	LCD_WriteReg(R82, 0x0000); //��ֱ����GRAM��ʼ��ַ
-	LCD_WriteReg(R83, 0x013F); //��ֱ����GRAM������ַ
+	LCD_WriteReg(R80, 0x0000);
+	LCD_WriteReg(R81, 0x00EF);
+	LCD_WriteReg(R82, 0x0000);
+	LCD_WriteReg(R83, 0x013F);
 }
 /*****************************************************************************
-** ��������: LCD_Delay
-** ��������: ����LCD������ʱ
-** ��  ����: Dream
-** �ա�  ��: 2010��12��06��
 *****************************************************************************/
 void LCD_Delay(uint32_t nCount)
 {
-	__IO uint16_t i;
-	for (i = 0; i < nCount * 100; i++)
-		;
+	// __IO uint16_t i;
+	// for (i = 0; i < nCount * 100; i++)
+	// 	// __asm__ __volatile__("nop");
+	// 	;
+	HAL_Delay(nCount);
 }
 /*********************************************************************************************************
 ** End of File
 *********************************************************************************************************/
+#endif /*ILI932x_ENABLED*/

@@ -1,5 +1,9 @@
+#include "conf.h"
+#ifdef ILI932x_ENABLED
 #ifndef __ILI932X_H
 #define __ILI932X_H
+#include "main.h"
+#include "common.h"
 
 /***********************************************************************************
 9320/9325 LCD�Ĵ���
@@ -146,3 +150,4 @@ void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r);
 void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend, uint16_t color);
 #endif
 /****************************** End File ********************************/
+#endif /*#ILI932x_ENABLED*/

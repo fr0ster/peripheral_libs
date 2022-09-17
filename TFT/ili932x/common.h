@@ -1,26 +1,26 @@
 #ifndef __COMMON_H
 #define __COMMON_H
 
-#include <stdio.h>
-#include <stdint.h>
+// #include <stdio.h>
+// // #include <stdint.h>
 
-//TFTLCD������Ҫ���õĺ���		   
-extern uint16_t  POINT_COLOR;//Ĭ�Ϻ�ɫ    
-extern uint16_t  BACK_COLOR; //������ɫ.Ĭ��Ϊ��ɫ
+// //TFTLCD������Ҫ���õĺ���		   
+// extern uint16_t  POINT_COLOR;//Ĭ�Ϻ�ɫ    
+// extern uint16_t  BACK_COLOR; //������ɫ.Ĭ��Ϊ��ɫ
 
-/* LED ���� */
-#define LED1 PAout(2)	   //�����϶�Ӧ��LED1
-#define LED2 PAout(3)	   //�����϶�Ӧ��LED2
+// /* LED ���� */
+// #define LED1 PAout(2)	   //�����϶�Ӧ��LED1
+// #define LED2 PAout(3)	   //�����϶�Ӧ��LED2
 
-/* ���� ���� */
-#define KEY1   PAin(0)	   //�����ϵ�KEY1��
-#define KEY2   PAin(1)	   //�����ϵ�KEY2��
+// /* ���� ���� */
+// #define KEY1   PAin(0)	   //�����ϵ�KEY1��
+// #define KEY2   PAin(1)	   //�����ϵ�KEY2��
 
-/* LCD ������������*/
-#define LCD_CS  PCout(8)
-#define LCD_RS	PCout(9)
-#define LCD_WR  PCout(10)
-#define LCD_RD	PCout(11)
+// /* LCD ������������*/
+// #define LCD_CS  PCout(8)
+// #define LCD_RS	PCout(9)
+// #define LCD_WR  PCout(10)
+// #define LCD_RD	PCout(11)
 
 //����LCD�ĳߴ�
 #define LCD_W 240

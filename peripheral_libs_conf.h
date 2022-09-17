@@ -15,5 +15,5 @@
 #include "max6675.h"
 #endif
 #ifdef ILI932x_ENABLED
-#include "ili932x.h"
+#include "ILI932x.h"
 #endif
