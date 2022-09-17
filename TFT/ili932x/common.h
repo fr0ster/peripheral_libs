@@ -1,33 +1,10 @@
 #ifndef __COMMON_H
 #define __COMMON_H
 
-// #include <stdio.h>
-// // #include <stdint.h>
-
-// //TFTLCD������Ҫ���õĺ���		   
-// extern uint16_t  POINT_COLOR;//Ĭ�Ϻ�ɫ    
-// extern uint16_t  BACK_COLOR; //������ɫ.Ĭ��Ϊ��ɫ
-
-// /* LED ���� */
-// #define LED1 PAout(2)	   //�����϶�Ӧ��LED1
-// #define LED2 PAout(3)	   //�����϶�Ӧ��LED2
-
-// /* ���� ���� */
-// #define KEY1   PAin(0)	   //�����ϵ�KEY1��
-// #define KEY2   PAin(1)	   //�����ϵ�KEY2��
-
-// /* LCD ������������*/
-// #define LCD_CS  PCout(8)
-// #define LCD_RS	PCout(9)
-// #define LCD_WR  PCout(10)
-// #define LCD_RD	PCout(11)
-
-//����LCD�ĳߴ�
 #define LCD_W 240
 #define LCD_H 320
 
 /***********************************************************************************
-������ɫ�궨��
 ***********************************************************************************/
 #define   BLACK        0x0000                    /* ��ɫ�� 0, 0, 0               */
 #define   NAVY         0x000F                    /* ����ɫ�� 0, 0, 128           */
@@ -48,4 +25,3 @@
 #define   IDMCOLOR(color) (((color & 0x001F) << 11) | ((color & 0xF800) >> 11) | (color & 0x07E0))
 
 #endif	    
-		
