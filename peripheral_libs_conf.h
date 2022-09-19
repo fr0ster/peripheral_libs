@@ -14,6 +14,9 @@
 #ifdef MAX6675_ENABLED
 #include "max6675.h"
 #endif
+#ifdef TFT_ENABLED
+#include "tft.h"
+#endif
 #ifdef ILI932x_ENABLED
 #include "ILI932x.h"
 #endif

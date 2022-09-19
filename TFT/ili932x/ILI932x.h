@@ -4,9 +4,10 @@
 #define __ILI932X_H
 #include "main.h"
 #include "common.h"
+#include "Font_Lib.h"
 
 /***********************************************************************************
-9320/9325 LCD�Ĵ���
+9320/9325 LCD
 ***********************************************************************************/
 #define R0 0x00
 #define R1 0x01
@@ -117,37 +118,19 @@
 #define R193 0xC1
 #define R229 0xE5
 
-/* �������� */
 void LCD_WriteRAM_Prepare(void);
 void LCD_DrawPoint(uint16_t x, uint16_t y);
 void LCD_SetCursor(uint8_t Xpos, uint16_t Ypos);
-void LCD_WriteReg(uint16_t LCD_Reg, uint16_t LCD_Dat);
 uint16_t LCD_ReadDat(void);
 void Write_Cmd(uint16_t LCD_Reg);
 void Write_Dat(uint16_t LCD_Dat);
 uint16_t LCD_ReadReg(uint16_t LCD_Reg);
 void LCD_Init(void);
 void LCD_Configuration(void);
-void LCD_Delay(uint32_t nCount);
-uint32_t Num_power(uint8_t m, uint8_t n);
 void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width);
-void LCD_ShowString(uint8_t x, uint16_t y, __I uint8_t *p);
-void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size);
 void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mode);
 void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, uint8_t *bitmap);
-void LCD_Clear(uint16_t Color);
-uint16_t WriteOneASCII(uint8_t *pucMsk,
-                       uint16_t x0,
-                       uint16_t y0,
-                       uint16_t color);
-uint16_t WriteOneHzChar(uint8_t *pucMsk,
-                        uint16_t x0,
-                        uint16_t y0,
-                        uint16_t color);
-void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color);
-void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
-void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r);
 void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend, uint16_t color);
-#endif
+#endif /*__ILI932X_H*/
 /****************************** End File ********************************/
-#endif /*#ILI932x_ENABLED*/
+#endif /*ILI932x_ENABLED*/

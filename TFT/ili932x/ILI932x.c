@@ -1,51 +1,32 @@
-#include "ILI932x.h"
+#include "tft.h"
 #ifdef ILI932x_ENABLED
-#include "Font_Lib.h"
-uint16_t POINT_COLOR = BLUE, BACK_COLOR = WHITE;
 
-/*****************************************************************************
-*****************************************************************************/
-void LCD_WriteReg(uint16_t LCD_Reg, uint16_t LCD_Dat)
-{
-	Write_Cmd(LCD_Reg);
-	Write_Dat(LCD_Dat);
-}
 /*****************************************************************************
 *****************************************************************************/
 void Write_Cmd(uint16_t LCD_Reg)
 {
-	// LCD_CS = 0;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
-	// LCD_RS = 0;
 	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_RESET);
-	GPIOC->ODR = (GPIOC->ODR & 0xff00) | (LCD_Reg & 0x00ff);
+	DB00_GPIO_Port->ODR = (DB00_GPIO_Port->ODR & 0xff00) | (LCD_Reg & 0x00ff);
 	// #ifdef TFT_16_ENABLED
-	GPIOB->ODR = (GPIOB->ODR & 0x00ff) | (LCD_Reg & 0xff00);
+	DB08_GPIO_Port->ODR = (DB08_GPIO_Port->ODR & 0x00ff) | (LCD_Reg & 0xff00);
 	// #endif
-	// LCD_WR = 0;
 	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_RESET);
-	// LCD_WR = 1;
 	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_SET);
-	// LCD_CS = 1;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
 *****************************************************************************/
 void Write_Dat(uint16_t LCD_Dat)
 {
-	// LCD_CS = 0;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
-	// LCD_RS = 1;
 	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
-	GPIOC->ODR = (GPIOC->ODR & 0xff00) | (LCD_Dat & 0x00ff);
+	DB00_GPIO_Port->ODR = (DB00_GPIO_Port->ODR & 0xff00) | (LCD_Dat & 0x00ff);
 	// #ifdef TFT_16_ENABLED
-	GPIOB->ODR = (GPIOB->ODR & 0x00ff) | (LCD_Dat & 0xff00);
+	DB08_GPIO_Port->ODR = (DB08_GPIO_Port->ODR & 0x00ff) | (LCD_Dat & 0xff00);
 	// #endif
-	// LCD_WR = 0;
 	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_RESET);
-	// LCD_WR = 1;
 	HAL_GPIO_WritePin(TFT_WR_GPIO_Port, TFT_WR_Pin, GPIO_PIN_SET);
-	// LCD_CS = 1;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
@@ -56,7 +37,7 @@ uint16_t LCD_ReadReg(uint16_t LCD_Reg)
 	Write_Cmd(LCD_Reg);
 
 	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x44444444;
-	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x44444444;
+	DB00_GPIO_Port->CRL = (DB00_GPIO_Port->CRL & 0x00000000) | 0x44444444;
 	// LCD_CS = 0;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
 	// LCD_RS = 1;
@@ -69,66 +50,64 @@ uint16_t LCD_ReadReg(uint16_t LCD_Reg)
 	// LCD_CS = 1;
 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
 	GPIOB->CRH = (GPIOB->CRH & 0x00000000) | 0x33333333;
-	GPIOC->CRL = (GPIOC->CRL & 0x00000000) | 0x33333333;
+	DB00_GPIO_Port->CRL = (DB00_GPIO_Port->CRL & 0x00000000) | 0x33333333;
 	return temp;
 }
 /*****************************************************************************
 *****************************************************************************/
-uint16_t LCD_ReadDat()
-{
-	uint16_t temp;
+// uint16_t LCD_ReadDat()
+// {
+// 	uint16_t temp;
 
-	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x44444444;
-	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x44444444;
-	// LCD_CS = 0;
-	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
-	// LCD_RS = 1;
-	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
-	// LCD_RD = 0;
-	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_RESET);
-	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff));
-	// LCD_RD = 1;
-	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_SET);
-	// LCD_CS = 1;
-	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
-	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x33333333;
-	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x33333333;
+// 	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x44444444;
+// 	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x44444444;
+// 	// LCD_CS = 0;
+// 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_RESET);
+// 	// LCD_RS = 1;
+// 	HAL_GPIO_WritePin(TFT_RS_GPIO_Port, TFT_RS_Pin, GPIO_PIN_SET);
+// 	// LCD_RD = 0;
+// 	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_RESET);
+// 	temp = ((GPIOB->IDR & 0xff00) | (GPIOC->IDR & 0x00ff));
+// 	// LCD_RD = 1;
+// 	HAL_GPIO_WritePin(TFT_RD_GPIO_Port, TFT_RD_Pin, GPIO_PIN_SET);
+// 	// LCD_CS = 1;
+// 	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin, GPIO_PIN_SET);
+// 	GPIOE->CRH = (GPIOE->CRH & 0x00000000) | 0x33333333;
+// 	GPIOE->CRL = (GPIOE->CRL & 0x00000000) | 0x33333333;
 
-	return temp;
-}
+// 	return temp;
+// }
 /*****************************************************************************
 *****************************************************************************/
 void LCD_Configuration()
 {
-#ifdef TFT_08_ENABLED
-#if (defined(DB08_Pin) | \
-	 defined(DB09_Pin) | \
-	 defined(DB10_Pin) | \
-	 defined(DB11_Pin) | \
-	 defined(DB12_Pin) | \
-	 defined(DB13_Pin) | \
-	 defined(DB14_Pin) | \
-	 defined(DB15_Pin))
-#else
+#if defined(TFT_08_ENABLED) || defined(TFT_16_ENABLED)
+#if (!defined(DB08_Pin) || \
+	 !defined(DB09_Pin) || \
+	 !defined(DB10_Pin) || \
+	 !defined(DB11_Pin) || \
+	 !defined(DB12_Pin) || \
+	 !defined(DB13_Pin) || \
+	 !defined(DB14_Pin) || \
+	 !defined(DB15_Pin))
 #error "Configure TFT data Pins in CubeMX, set pins for DB08-DB15 and set name for this pins as DB08-DB15"
 #endif
 #endif
 #ifdef TFT_16_ENABLED
-#if (defined(DB00_Pin) | \
-	 defined(DB01_Pin) | \
-	 defined(DB02_Pin) | \
-	 defined(DB03_Pin) | \
-	 defined(DB04_Pin) | \
-	 defined(DB05_Pin) | \
-	 defined(DB06_Pin) | \
-	 defined(DB07_Pin))
-#else
+#if (!defined(DB00_Pin) || \
+	 !defined(DB01_Pin) || \
+	 !defined(DB02_Pin) || \
+	 !defined(DB03_Pin) || \
+	 !defined(DB04_Pin) || \
+	 !defined(DB05_Pin) || \
+	 !defined(DB06_Pin) || \
+	 !defined(DB07_Pin))
 #error "Configure TFT data Pins in CubeMX, set pins for DB00-DB07 and set name for this pins as DB00-DB07"
 #endif
 #endif
 	// __HAL_RCC_GPIOC_CLK_ENABLE();
 	// __HAL_RCC_GPIOB_CLK_ENABLE();
-	HAL_GPIO_WritePin(GPIOC, TFT_CS_Pin | TFT_RS_Pin | TFT_WR_Pin | TFT_RD_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(TFT_CS_GPIO_Port, TFT_CS_Pin | TFT_RS_Pin | TFT_WR_Pin | TFT_RD_Pin, GPIO_PIN_SET);
 }
 /*****************************************************************************
 *****************************************************************************/
@@ -292,27 +271,6 @@ void LCD_SetDisplayWindow(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t 
 }
 /*****************************************************************************
 *****************************************************************************/
-#define MAX_CHAR_POSX 232
-#define MAX_CHAR_POSY 304
-void LCD_ShowString(uint8_t x, uint16_t y, __I uint8_t *p)
-{
-	while (*p != '\0')
-	{
-		if (x > MAX_CHAR_POSX)
-		{
-			x = 0;
-			y += 16;
-		}
-		if (y > MAX_CHAR_POSY)
-		{
-			y = x = 0;
-			LCD_Clear(WHITE);
-		}
-		LCD_ShowChar(x, y, *p, 16, 0);
-		x += 8;
-		p++;
-	}
-}
 /*****************************************************************************
 *****************************************************************************/
 void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mode)
@@ -371,209 +329,191 @@ void LCD_ShowChar(uint8_t x, uint16_t y, uint8_t chars, uint8_t size, uint8_t mo
 }
 /*****************************************************************************
 *****************************************************************************/
-void LCD_Clear(uint16_t Color)
-{
-	uint32_t index = 0;
-	LCD_SetCursor(0x00, 0x0000);
-	LCD_WriteRAM_Prepare();
-	for (index = 0; index < 76800; index++)
-	{
-		Write_Dat(Color);
-	}
-}
+// void LCD_Clear(uint16_t Color)
+// {
+// 	uint32_t index = 0;
+// 	LCD_SetCursor(0x00, 0x0000);
+// 	LCD_WriteRAM_Prepare();
+// 	for (index = 0; index < 76800; index++)
+// 	{
+// 		Write_Dat(Color);
+// 	}
+// }
 /*****************************************************************************
 *****************************************************************************/
-void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color)
-{
-	// uint16_t usIndex;
-	uint16_t usWidth = 0;
-	// FNT_GB16 *ptGb16 = 0;
+// void WriteString(uint16_t x0, uint16_t y0, uint8_t *pcStr, uint16_t color)
+// {
+// 	uint16_t usWidth = 0;
 
-	// ptGb16 = (FNT_GB16 *)GBHZ_16;
-	while (1)
-	{
-		if (*pcStr == 0)
-		{
-			break;
-		}
-		x0 = x0 + (usWidth);
-		if (*pcStr > 0x80)
-		{
-			// if ((x0 + 16) > LCD_W)
-			// {
-			// 	x0 = 0;
-			// 	y0 = y0 + 16;
-			// 	if (y0 > LCD_H)
-			// 	{
-			// 		y0 = 0;
-			// 	}
-			// }
-			// usIndex = findHzIndex(pcStr);
-			// usWidth = WriteOneHzChar((uint8_t *)&(ptGb16[usIndex].Msk[0]), x0, y0, color);
-			// pcStr += 2;
-		}
-		else
-		{
-			if (*pcStr == '\r')
-			{
-				y0 = y0 + 16;
-				if (y0 > LCD_H)
-				{
-					y0 = 0;
-				}
-				pcStr++;
-				usWidth = 0;
-				continue;
-			}
-			else if (*pcStr == '\n')
-			{
-				x0 = 0;
-				pcStr++;
-				usWidth = 0;
-				continue;
-			}
-			else
-			{
-				if ((x0 + 8) > LCD_W)
-				{
-					x0 = 0;
-					y0 = y0 + 16;
-					if (y0 > LCD_H)
-					{
-						y0 = 0;
-					}
-				}
-				usWidth = WriteOneASCII((uint8_t *)&ASCII_1608[(*pcStr - 0x20)][0], x0, y0, color);
-				pcStr += 1;
-			}
-		}
-	}
-}
+// 	while (1)
+// 	{
+// 		if (*pcStr == 0)
+// 		{
+// 			break;
+// 		}
+// 		x0 = x0 + (usWidth);
+// 		if (*pcStr <= 0x80)
+// 		{
+// 			if (*pcStr == '\r')
+// 			{
+// 				y0 = y0 + 16;
+// 				if (y0 > LCD_H)
+// 				{
+// 					y0 = 0;
+// 				}
+// 				pcStr++;
+// 				usWidth = 0;
+// 				continue;
+// 			}
+// 			else if (*pcStr == '\n')
+// 			{
+// 				x0 = 0;
+// 				pcStr++;
+// 				usWidth = 0;
+// 				continue;
+// 			}
+// 			else
+// 			{
+// 				if ((x0 + 8) > LCD_W)
+// 				{
+// 					x0 = 0;
+// 					y0 = y0 + 16;
+// 					if (y0 > LCD_H)
+// 					{
+// 						y0 = 0;
+// 					}
+// 				}
+// 				usWidth = WriteOneASCII((uint8_t *)&ASCII_1608[(*pcStr - 0x20)][0], x0, y0, color);
+// 				pcStr += 1;
+// 			}
+// 		}
+// 	}
+// }
 /*****************************************************************************
 *****************************************************************************/
-uint16_t WriteOneHzChar(uint8_t *pucMsk,
-						uint16_t x0,
-						uint16_t y0,
-						uint16_t color)
-{
-	uint16_t i, j;
-	uint16_t mod[16];
-	uint16_t *pusMsk;
-	uint16_t y;
+// uint16_t WriteOneHzChar(uint8_t *pucMsk,
+// 						uint16_t x0,
+// 						uint16_t y0,
+// 						uint16_t color)
+// {
+// 	uint16_t i, j;
+// 	uint16_t mod[16];
+// 	uint16_t *pusMsk;
+// 	uint16_t y;
 
-	pusMsk = (uint16_t *)pucMsk;
-	for (i = 0; i < 16; i++)
-	{
-		mod[i] = *pusMsk++;
-		mod[i] = ((mod[i] & 0xff00) >> 8) | ((mod[i] & 0x00ff) << 8);
-	}
-	y = y0;
-	for (i = 0; i < 16; i++)
-	{
-#ifdef __DISPLAY_BUFFER
-		for (j = 0; j < 16; j++)
-		{
-			if ((mod[i] << j) & 0x8000)
-			{
-				DispBuf[240 * (y0 + i) + x0 + j] = color;
-			}
-		}
-#else
+// 	pusMsk = (uint16_t *)pucMsk;
+// 	for (i = 0; i < 16; i++)
+// 	{
+// 		mod[i] = *pusMsk++;
+// 		mod[i] = ((mod[i] & 0xff00) >> 8) | ((mod[i] & 0x00ff) << 8);
+// 	}
+// 	y = y0;
+// 	for (i = 0; i < 16; i++)
+// 	{
+// #ifdef __DISPLAY_BUFFER
+// 		for (j = 0; j < 16; j++)
+// 		{
+// 			if ((mod[i] << j) & 0x8000)
+// 			{
+// 				DispBuf[240 * (y0 + i) + x0 + j] = color;
+// 			}
+// 		}
+// #else
 
-		LCD_SetCursor(x0, y);
-		LCD_WriteRAM_Prepare();
-		for (j = 0; j < 16; j++)
-		{
-			if ((mod[i] << j) & 0x8000)
-			{
-				Write_Dat(color);
-			}
-			else
-			{
-				Write_Dat(BACK_COLOR);
-				// LCD_ReadDat();
-			}
-		}
-		y++;
-#endif
-	}
-	return (16);
-}
+// 		LCD_SetCursor(x0, y);
+// 		LCD_WriteRAM_Prepare();
+// 		for (j = 0; j < 16; j++)
+// 		{
+// 			if ((mod[i] << j) & 0x8000)
+// 			{
+// 				Write_Dat(color);
+// 			}
+// 			else
+// 			{
+// 				Write_Dat(BACK_COLOR);
+// 				// LCD_ReadDat();
+// 			}
+// 		}
+// 		y++;
+// #endif
+// 	}
+// 	return (16);
+// }
 /*****************************************************************************
 *****************************************************************************/
-uint16_t WriteOneASCII(uint8_t *pucMsk,
-					   uint16_t x0,
-					   uint16_t y0,
-					   uint16_t color)
-{
-	uint16_t i, j;
-	uint16_t y;
-	uint8_t ucChar;
+// uint16_t WriteOneASCII(uint8_t *pucMsk,
+// 					   uint16_t x0,
+// 					   uint16_t y0,
+// 					   uint16_t color)
+// {
+// 	uint16_t i, j;
+// 	uint16_t y;
+// 	uint8_t ucChar;
 
-	y = y0;
-	for (i = 0; i < 16; i++)
-	{
-		ucChar = *pucMsk++;
-#ifdef __DISPLAY_BUFFER
-		for (j = 0; j < 8; j++)
-		{ /* 8��                          */
-			if ((ucChar << j) & 0x80)
-			{ /* ��ʾ��ģ                     */
-				DispBuf[240 * (y0 + i) + x0 + j] = color;
-			}
-		}
-#else
+// 	y = y0;
+// 	for (i = 0; i < 16; i++)
+// 	{
+// 		ucChar = *pucMsk++;
+// #ifdef __DISPLAY_BUFFER
+// 		for (j = 0; j < 8; j++)
+// 		{ /* 8��                          */
+// 			if ((ucChar << j) & 0x80)
+// 			{ /* ��ʾ��ģ                     */
+// 				DispBuf[240 * (y0 + i) + x0 + j] = color;
+// 			}
+// 		}
+// #else
 
-		LCD_SetCursor(x0, y);
-		LCD_WriteRAM_Prepare();
-		for (j = 0; j < 8; j++)
-		{
-			if ((ucChar << j) & 0x80)
-			{
-				Write_Dat(color);
-			}
-			else
-			{
-				Write_Dat(BACK_COLOR);
-				// LCD_ReadDat();
-			}
-		}
-		y++;
-#endif
-	}
-	return (8); /* ����16λ�п�                 */
-}
+// 		LCD_SetCursor(x0, y);
+// 		LCD_WriteRAM_Prepare();
+// 		for (j = 0; j < 8; j++)
+// 		{
+// 			if ((ucChar << j) & 0x80)
+// 			{
+// 				Write_Dat(color);
+// 			}
+// 			else
+// 			{
+// 				Write_Dat(BACK_COLOR);
+// 				// LCD_ReadDat();
+// 			}
+// 		}
+// 		y++;
+// #endif
+// 	}
+// 	return (8);
+// }
 /*****************************************************************************
 *****************************************************************************/
-uint32_t Num_power(uint8_t m, uint8_t n)
-{
-	uint32_t result = 1;
-	while (n--)
-		result *= m;
-	return result;
-}
+// uint32_t Num_power(uint8_t m, uint8_t n)
+// {
+// 	uint32_t result = 1;
+// 	while (n--)
+// 		result *= m;
+// 	return result;
+// }
 /*****************************************************************************
 *****************************************************************************/
-void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size)
-{
-	uint8_t t, temp;
-	uint8_t enshow = 0;
-	for (t = 0; t < len; t++)
-	{
-		temp = (num / Num_power(10, len - t - 1)) % 10;
-		if (enshow == 0 && t < (len - 1))
-		{
-			if (temp == 0)
-			{
-				LCD_ShowChar(x + (size / 2) * t, y, ' ', size, 0);
-				continue;
-			}
-			else
-				enshow = 1;
-		}
-		LCD_ShowChar(x + (size / 2) * t, y, temp + '0', size, 0);
-	}
-}
+// void LCD_ShowNum(uint8_t x, uint16_t y, uint32_t num, uint8_t len, uint8_t size)
+// {
+// 	uint8_t t, temp;
+// 	uint8_t enshow = 0;
+// 	for (t = 0; t < len; t++)
+// 	{
+// 		temp = (num / Num_power(10, len - t - 1)) % 10;
+// 		if (enshow == 0 && t < (len - 1))
+// 		{
+// 			if (temp == 0)
+// 			{
+// 				LCD_ShowChar(x + (size / 2) * t, y, ' ', size, 0);
+// 				continue;
+// 			}
+// 			else
+// 				enshow = 1;
+// 		}
+// 		LCD_ShowChar(x + (size / 2) * t, y, temp + '0', size, 0);
+// 	}
+// }
 /*****************************************************************************
 *****************************************************************************/
 void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, uint8_t *bitmap)
@@ -599,87 +539,87 @@ void LCD_WriteBMP(uint8_t Xpos, uint16_t Ypos, uint8_t Height, uint16_t Width, u
 }
 /*****************************************************************************
 *****************************************************************************/
-void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
-{
-	uint16_t t;
-	int xerr = 0, yerr = 0, delta_x, delta_y, distance;
-	int incx, incy, uRow, uCol;
+// void LCD_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
+// {
+// 	uint16_t t;
+// 	int xerr = 0, yerr = 0, delta_x, delta_y, distance;
+// 	int incx, incy, uRow, uCol;
 
-	delta_x = x2 - x1;
-	delta_y = y2 - y1;
-	uRow = x1;
-	uCol = y1;
-	if (delta_x > 0)
-		incx = 1;
-	else if (delta_x == 0)
-		incx = 0;
-	else
-	{
-		incx = -1;
-		delta_x = -delta_x;
-	}
-	if (delta_y > 0)
-		incy = 1;
-	else if (delta_y == 0)
-		incy = 0;
-	else
-	{
-		incy = -1;
-		delta_y = -delta_y;
-	}
-	if (delta_x > delta_y)
-		distance = delta_x;
-	else
-		distance = delta_y;
-	for (t = 0; t <= distance + 1; t++)
-	{
-		LCD_DrawPoint(uRow, uCol);
-		xerr += delta_x;
-		yerr += delta_y;
-		if (xerr > distance)
-		{
-			xerr -= distance;
-			uRow += incx;
-		}
-		if (yerr > distance)
-		{
-			yerr -= distance;
-			uCol += incy;
-		}
-	}
-}
+// 	delta_x = x2 - x1;
+// 	delta_y = y2 - y1;
+// 	uRow = x1;
+// 	uCol = y1;
+// 	if (delta_x > 0)
+// 		incx = 1;
+// 	else if (delta_x == 0)
+// 		incx = 0;
+// 	else
+// 	{
+// 		incx = -1;
+// 		delta_x = -delta_x;
+// 	}
+// 	if (delta_y > 0)
+// 		incy = 1;
+// 	else if (delta_y == 0)
+// 		incy = 0;
+// 	else
+// 	{
+// 		incy = -1;
+// 		delta_y = -delta_y;
+// 	}
+// 	if (delta_x > delta_y)
+// 		distance = delta_x;
+// 	else
+// 		distance = delta_y;
+// 	for (t = 0; t <= distance + 1; t++)
+// 	{
+// 		LCD_DrawPoint(uRow, uCol);
+// 		xerr += delta_x;
+// 		yerr += delta_y;
+// 		if (xerr > distance)
+// 		{
+// 			xerr -= distance;
+// 			uRow += incx;
+// 		}
+// 		if (yerr > distance)
+// 		{
+// 			yerr -= distance;
+// 			uCol += incy;
+// 		}
+// 	}
+// }
 /*****************************************************************************
 *****************************************************************************/
-void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r)
-{
-	int a, b;
-	int di;
-	a = 0;
-	b = r;
-	di = 3 - (r << 1); //�ж��¸���λ�õı�־
-	while (a <= b)
-	{
-		LCD_DrawPoint(x0 - b, y0 - a); // 3
-		LCD_DrawPoint(x0 + b, y0 - a); // 0
-		LCD_DrawPoint(x0 - a, y0 + b); // 1
-		LCD_DrawPoint(x0 - b, y0 - a); // 7
-		LCD_DrawPoint(x0 - a, y0 - b); // 2
-		LCD_DrawPoint(x0 + b, y0 + a); // 4
-		LCD_DrawPoint(x0 + a, y0 - b); // 5
-		LCD_DrawPoint(x0 + a, y0 + b); // 6
-		LCD_DrawPoint(x0 - b, y0 + a);
-		a++;
-		//ʹ��Bresenham�㷨��Բ
-		if (di < 0)
-			di += 4 * a + 6;
-		else
-		{
-			di += 10 + 4 * (a - b);
-			b--;
-		}
-		LCD_DrawPoint(x0 + a, y0 + b);
-	}
-}
+// void Draw_Circle(uint8_t x0, uint16_t y0, uint8_t r)
+// {
+// 	int a, b;
+// 	int di;
+// 	a = 0;
+// 	b = r;
+// 	di = 3 - (r << 1); //�ж��¸���λ�õı�־
+// 	while (a <= b)
+// 	{
+// 		LCD_DrawPoint(x0 - b, y0 - a); // 3
+// 		LCD_DrawPoint(x0 + b, y0 - a); // 0
+// 		LCD_DrawPoint(x0 - a, y0 + b); // 1
+// 		LCD_DrawPoint(x0 - b, y0 - a); // 7
+// 		LCD_DrawPoint(x0 - a, y0 - b); // 2
+// 		LCD_DrawPoint(x0 + b, y0 + a); // 4
+// 		LCD_DrawPoint(x0 + a, y0 - b); // 5
+// 		LCD_DrawPoint(x0 + a, y0 + b); // 6
+// 		LCD_DrawPoint(x0 - b, y0 + a);
+// 		a++;
+// 		//ʹ��Bresenham�㷨��Բ
+// 		if (di < 0)
+// 			di += 4 * a + 6;
+// 		else
+// 		{
+// 			di += 10 + 4 * (a - b);
+// 			b--;
+// 		}
+// 		LCD_DrawPoint(x0 + a, y0 + b);
+// 	}
+// }
 /*****************************************************************************
 *****************************************************************************/
 void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend, uint16_t color)
@@ -705,14 +645,14 @@ void LCD_Fill(uint8_t xsta, uint16_t ysta, uint8_t xend, uint16_t yend, uint16_t
 }
 /*****************************************************************************
 *****************************************************************************/
-void LCD_Delay(uint32_t nCount)
-{
-	// __IO uint16_t i;
-	// for (i = 0; i < nCount * 100; i++)
-	// 	// __asm__ __volatile__("nop");
-	// 	;
-	HAL_Delay(nCount);
-}
+// void LCD_Delay(uint32_t nCount)
+// {
+// 	// __IO uint16_t i;
+// 	// for (i = 0; i < nCount * 100; i++)
+// 	// 	// __asm__ __volatile__("nop");
+// 	// 	;
+// 	HAL_Delay(nCount);
+// }
 /*********************************************************************************************************
 ** End of File
 *********************************************************************************************************/
